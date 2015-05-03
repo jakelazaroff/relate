@@ -60,7 +60,7 @@ Creates a collection named `name` and returns it, or throws an error if a collec
 - **transform**: a transformation function executed on each entity added to the collection
 - **map**: an object mapping properties on the collection's entities to other collections
 
-**Note:** Shouldn't need to be called manually, since `Relate.import` will create collections automatically.
+:speech_balloon: Shouldn't need to be called manually, since `Relate.import` will create collections automatically.
 
 ```javascript
 var Song = function () { /* ... */ };
@@ -95,7 +95,7 @@ Relate.map.songs = { artist: 'artists' };
 
 Copies the methods defined in `Entity` to `entity`, binding `entity` and `collection` to each method as `this` and the first argument, respectively. If `Entity.prefix` is defined, creates an object with that property on `entity` and copies the method there, instead of directly on `entity` itself.
 
-**Note:** Shouldn't need to be called manually, since `Collection.add` will mix in `Entity` methods automatically.
+:speech_balloon: Shouldn't need to be called manually, since `Collection.add` will mix in `Entity` methods automatically.
 
 #### .noConflict()
 
@@ -122,13 +122,13 @@ Creates a collection named `name` and returns it, or throws an error if a collec
 - **transform**: a transformation function executed on each entity added to the collection
 - **map**: an object mapping properties on the collection's entities to other collections
 
-**Important:** If a collection is created directly using the constructor, other collections and entities will not be able to access it. Use `Relate.collection.create` instead.
+:bangbang: If a collection is created directly using the constructor, other collections and entities will not be able to access it. Use `Relate.collection.create` instead.
 
 #### .add(entity)
 
 Given an object `entity`, executes the collection's transformation function on it, mixes in the `Entity` methods and adds it to the collection. If an entity with the same ID already exists in the collection, throws an error.
 
-**Note:** Shouldn't need to be called manually, since `Collection.import` will iterate over the array of entities and add them.
+:speech_balloon: Shouldn't need to be called manually, since `Collection.import` will iterate over the array of entities and add them.
 
 ```javascript
 Relate.collection('artists').add({
@@ -153,7 +153,7 @@ Relate.collection('songs').get([1, 2]);
 
 Takes an array and populates the collection. Each object in the array is used as an entity and must have a unique attribute `id`.
 
-**Note:** Shouldn't need to be called manually, since `Relate.import` will import each array of entities into a collection automatically.
+:speech_balloon: Shouldn't need to be called manually, since `Relate.import` will import each array of entities into a collection automatically.
 
 ```javascript
 Relate.collection('songs').import([
