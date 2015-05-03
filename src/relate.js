@@ -2,7 +2,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '1.0.0';
+  Relate.VERSION = '0.1.0';
 
   var _Relate = root.Relate;
   root.Relate = Relate;
