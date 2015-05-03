@@ -2,15 +2,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.1.0';
-
-  var _Relate = root.Relate;
-  root.Relate = Relate;
-
-  Relate.noConflict = function () {
-    root.relate = _Relate;
-    return Relate;
-  };
+  Relate.VERSION = '0.2.0';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -122,4 +114,18 @@
     entity.collection = collection;
   };
 
-})(window);
+  var _Relate = root.Relate;
+
+  Relate.noConflict = function () {
+    root.relate = _Relate;
+    return Relate;
+  };
+
+  if (typeof define === 'function' && define.amd)
+    define([], function () {
+      return Relate;
+    });
+  else
+    root.Relate = Relate;
+
+})(this);
