@@ -1,0 +1,9 @@
+{
+  "name": "relate",
+  "version": "0.1.0",
+  "main": "src/relate.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*"
+  ]
+}
