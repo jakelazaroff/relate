@@ -5,7 +5,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.2.2';
+  Relate.VERSION = '0.2.3';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -27,7 +27,7 @@
     var self = this;
 
     if (self.store[entity.id])
-      throw new Error('Entity with id ' + entity.id + ' in collection "' + self.name + '" already exists.');
+      throw new Error('Entity with id ' + entity.id + ' already exists in collection "' + self.name + '".');
 
     if (self.transform)
       entity = self.transform(entity);
