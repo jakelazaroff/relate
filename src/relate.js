@@ -1,8 +1,11 @@
 ;(function (root) {
 
+  var keys = Object.keys,
+      isArray = Array.isArray;
+
   var Relate = {};
 
-  Relate.VERSION = '0.2.0';
+  Relate.VERSION = '0.2.1';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -42,10 +45,10 @@
   Collection.prototype.mapped = function (key) {
     var self = this;
 
-    return Object.keys(self.map)
+    return keys(self.map)
       .map(function (key) {
         return self.map[key];
-      }).indexOf(key);
+      }).indexOf(key) !== -1;
   };
 
   Collection.prototype.key = function (key) {
@@ -53,14 +56,16 @@
 
     if (self.map[key])
       return self.map[key];
-    else if (Relate.collection.exists(key) && self.mapped(key))
+    else if (Relate.collection.exists(key) && !self.mapped(key))
       return key;
+    else
+      return undefined;
   };
 
   Collection.prototype.get = function (query) {
     var self = this;
 
-    if (Array.isArray(query))
+    if (isArray(query))
       return query.map(function (id) {
         return self.store[id];
       });
@@ -90,7 +95,7 @@
   };
 
   Relate.import = function (data) {
-    Object.keys(data).forEach(function (collection) {
+    keys(data).forEach(function (collection) {
       Relate.collection.create(collection).import(data[collection]);
     });
   };
