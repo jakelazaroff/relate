@@ -5,22 +5,22 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.2.3';
+  Relate.VERSION = '0.2.4';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
 
   // Relate.Collection
 
-  var Collection = Relate.Collection = function (name) {
+  var Collection = Relate.Collection = function (name, options) {
     var self = this,
         options = options || {};
 
     self.name = name;
     self.store = {};
 
-    self.transform = transform[name];
-    self.map = map[name] || {};
+    self.transform = options.transform;
+    self.map = options.map || {};
   };
 
   Collection.prototype.add = function (entity) {
@@ -85,11 +85,16 @@
     return collections[name]; 
   };
 
-  Relate.collection.create = function (name) {
+  Relate.collection.create = function (name, options) {
     if (Relate.collection.exists(name))
       throw new Error('Collection "' + name + '" already exists.');
+
+    options = options || {};
     
-    collections[name] = new Collection(name);
+    collections[name] = new Collection(name, {
+      transform : options.transform || transform[name],
+      map : options.map || map[name]
+    });
     return collections[name];
   };
 
@@ -99,7 +104,10 @@
 
   Relate.import = function (data) {
     keys(data).forEach(function (collection) {
-      Relate.collection.create(collection).import(data[collection]);
+      Relate.collection.create(collection, {
+        transform : transform[collection],
+        map : map[collection]
+      }).import(data[collection]);
     });
   };
 
