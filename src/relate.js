@@ -5,7 +5,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.2.4';
+  Relate.VERSION = '0.3.0';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -115,19 +115,25 @@
 
   var Entity = Relate.Entity = {};
 
-  Entity.get = function (key) {
-    var self = this,
-        collection = self.collection.key(key);
+  Entity.prefix = undefined;
 
-    if (collection)
-      return Relate.collection(collection).get(self[key]);
+  Entity.get = function (collection, key) {
+    var self = this,
+        name = collection.key(key);
+
+    if (name)
+      return Relate.collection(name).get(self[key]);
     else
       return self[key];
   };
 
   Relate.mixin = function (entity, collection) {
-    entity.get = Entity.get;
-    entity.collection = collection;
+
+    var destination = Entity.prefix ? entity[Entity.prefix] = {} : entity;
+
+    ['get'].forEach(function (method) {
+      destination[method] = Entity[method].bind(entity, collection);
+    });
   };
 
   var _Relate = root.Relate;
