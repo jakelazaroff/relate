@@ -160,13 +160,15 @@ Relate.collection('artists').add({
 
 #### .get(query)
 
-If `query` is an ID, returns the corresponding entity in the collection; if `query` is an array, returns an array thereof. 
+If `query` is an ID, returns the corresponding entity in the collection. If `query` is an array of IDs, returns an array of the corresponding entities in the collection. If `query` is a hash, returns an array of all entities in the collection with matching keys and values.
 
 ```javascript
 Relate.collection('songs').get(1);
 // Song {id: 1, name: "Most Of The Time", artist: 1, relate: Object}
 Relate.collection('songs').get([1, 2]);
 // [Song {id: 1, name: "Most Of The Time"…}, Song {id: 2, name: "New Scream"…}]
+Relate.collection('songs').get({ name: 'New Scream' });
+// [Song {id: 2, name: "New Scream"…}]
 ```
 
 #### .import(entities)
