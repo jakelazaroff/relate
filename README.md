@@ -10,7 +10,27 @@ None! :tada:
 
 ## Installation
 
-`bower install --save relate`
+Install manually: just copy `src/relate.js` wherever you'd like.
+
+Install using Bower:
+
+```
+bower install --save relate
+```
+
+Load in a browser:
+
+```html
+<script src="relate.js"></script>
+```
+
+Load using AMD:
+
+```javascript
+require(['Relate'], function (Relate) {
+  // ...
+});
+```
 
 ## Documentation
 
