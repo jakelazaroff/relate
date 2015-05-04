@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.4.0';
+  Relate.VERSION = '0.4.1';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -83,8 +83,7 @@
           for (var key in query)
             if (query[key] !== entity[key])
               return false;
-            else
-              return true;
+          return true;
         })
       );
     else
