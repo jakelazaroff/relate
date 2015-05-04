@@ -1,11 +1,15 @@
 ;(function (root) {
 
   var keys = Object.keys,
-      isArray = Array.isArray;
+      isArray = Array.isArray,
+      isObject = function (obj) {
+        var type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+      };
 
   var Relate = {};
 
-  Relate.VERSION = '0.3.0';
+  Relate.VERSION = '0.4.0';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -72,6 +76,17 @@
       return query.map(function (id) {
         return self.store[id];
       });
+    else if (isObject(query))
+      return self.get(
+        keys(self.store).filter(function (id) {
+          var entity = self.store[id];
+          for (var key in query)
+            if (query[key] !== entity[key])
+              return false;
+            else
+              return true;
+        })
+      );
     else
       return self.store[query];
   };
