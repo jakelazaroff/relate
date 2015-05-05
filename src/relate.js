@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.0';
+  Relate.VERSION = '0.6.1';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
@@ -156,9 +156,9 @@
   };
 
   if (typeof define === 'function' && define.amd)
-    define([], function () {
-      return Relate;
-    });
+    define([], function () { return Relate; });
+  else if (typeof exports !== 'undefined')
+    exports.Relate = Relate;
   else
     root.Relate = Relate;
 
