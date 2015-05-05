@@ -111,12 +111,6 @@ An object containing mappings between item properties and collection names. The 
 Relate.map.songs = { artist: 'artists' };
 ```
 
-#### .mixin(item, collection)
-
-Copies the methods defined in `Item` to `item`, binding `item` and `collection` to each method as `this` and the first argument, respectively. If `Item.prefix` is defined, creates an object with that property on `item` and copies the method there, instead of directly on `item` itself.
-
-:speech_balloon: Shouldn't need to be called manually, since `Collection.add` will mix in `Item` methods automatically.
-
 #### .noConflict()
 
 If it was set on a global object, restores `Relate` to its prior value and returns it.

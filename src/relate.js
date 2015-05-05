@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.1';
+  Relate.VERSION = '0.6.2';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
@@ -36,7 +36,7 @@
       throw new Error('Item with id ' + item.id + ' already exists in collection "' + self.name + '".');
 
     item = self._transform(item, self);
-    Relate.mixin(item, self);
+    Relate._mixin(item, self);
 
     return self.store[item.id] = item;
   };
@@ -139,7 +139,7 @@
       return self[key];
   };
 
-  Relate.mixin = function (item, collection) {
+  Relate._mixin = function (item, collection) {
 
     var destination = Item.prefix ? item[Item.prefix] = {} : item;
 
