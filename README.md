@@ -146,7 +146,7 @@ Creates a collection named `name` and returns it, or throws an error if a collec
 
 #### .add(item)
 
-Given an object `item`, executes the collection's transformation function on it, mixes in the `Item` methods and adds it to the collection. If an item with the same ID already exists in the collection, throws an error.
+Given an object `item`, executes the collection's transformation function on it, mixes in the `Item` methods, adds it to the collection and returns it. If an item with the same ID already exists in the collection, throws an error.
 
 :speech_balloon: Shouldn't need to be called manually, since `Collection.import` will iterate over the array of items and add them.
 

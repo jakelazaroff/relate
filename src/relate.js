@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.5.0';
+  Relate.VERSION = '0.5.1';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -38,7 +38,7 @@
 
     Relate.mixin(item, self);
 
-    self.store[item.id] = item;
+    return self.store[item.id] = item;
   };
 
   Collection.prototype.import = function (items) {
