@@ -70,7 +70,7 @@ Returns the collection named `name`, or throws an error if it doesn't exist.
 
 ```javascript
 Relate.collection('artists');
-// Relate.Collection {name: "artists", store: Object, transform: function, map: Object, add: function…}
+// Relate.Collection {name: "artists", store: Object, add: function…}
 ```
 
 #### .collection.create(name[, options])
@@ -89,7 +89,7 @@ Relate.collection.create('songs', {
   map: { artist: 'artists' },
   transform: function (item) { return new Artist(item); }
 });
-// Relate.Collection {name: "songs", store: Object, transform: function, map: Object, add: function…}
+// Relate.Collection {name: "songs", store: Object, add: function…}
 ```
 
 #### .collection.exists(name)

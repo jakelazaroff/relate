@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.5.1';
+  Relate.VERSION = '0.5.2';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -23,8 +23,8 @@
     self.name = name;
     self.store = {};
 
-    self.transform = options.transform;
-    self.map = options.map || {};
+    self._transform = options.transform;
+    self._map = options.map || {};
   };
 
   Collection.prototype.add = function (item) {
@@ -33,8 +33,8 @@
     if (self.store[item.id])
       throw new Error('Item with id ' + item.id + ' already exists in collection "' + self.name + '".');
 
-    if (self.transform)
-      item = self.transform(item);
+    if (self._transform)
+      item = self._transform(item);
 
     Relate.mixin(item, self);
 
@@ -52,17 +52,17 @@
   Collection.prototype.mapped = function (key) {
     var self = this;
 
-    return keys(self.map)
+    return keys(self._map)
       .map(function (key) {
-        return self.map[key];
+        return self._map[key];
       }).indexOf(key) !== -1;
   };
 
   Collection.prototype.key = function (key) {
     var self = this;
 
-    if (self.map[key])
-      return self.map[key];
+    if (self._map[key])
+      return self._map[key];
     else if (Relate.collection.exists(key) && !self.mapped(key))
       return key;
     else
