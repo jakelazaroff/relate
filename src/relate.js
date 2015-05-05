@@ -9,9 +9,11 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.5.2';
+  Relate.VERSION = '0.6.0';
 
   var transform = Relate.transform = {};
+  var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
+
   var map = Relate.map = {};
 
   // Relate.Collection
@@ -33,9 +35,7 @@
     if (self.store[item.id])
       throw new Error('Item with id ' + item.id + ' already exists in collection "' + self.name + '".');
 
-    if (self._transform)
-      item = self._transform(item);
-
+    item = self._transform(item, self);
     Relate.mixin(item, self);
 
     return self.store[item.id] = item;
@@ -106,7 +106,7 @@
     options = options || {};
     
     collections[name] = new Collection(name, {
-      transform : options.transform || transform[name],
+      transform : options.transform || transform[name] || Relate.defaultTransform,
       map : options.map || map[name]
     });
     return collections[name];
@@ -118,10 +118,8 @@
 
   Relate.import = function (data) {
     keys(data).forEach(function (collection) {
-      Relate.collection.create(collection, {
-        transform : transform[collection],
-        map : map[collection]
-      }).import(data[collection]);
+      Relate.collection.create(collection)
+        .import(data[collection]);
     });
   };
 

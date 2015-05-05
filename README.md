@@ -123,15 +123,19 @@ If it was set on a global object, restores `Relate` to its prior value and retur
 
 #### .transform
 
-An object containing transformation functions executed on each item as it's imported into a collection. The properties in `Relate.transform` correspond to collection names. The transformation function receives the item's raw properties as its argument and must return an object to be used as the item.
+An object containing transformation functions executed on each item as it's imported into a collection. The properties in `Relate.transform` correspond to collection names. The transformation function receives the item's raw properties and the collection to which it will be added, and must return an object to be used as the item.
 
 Transforms must be set before data is imported.
 
 ```javascript
 var Artist = function () { /* ... */ };
 
-Relate.transform.artists = function (item) { return new Artist(item); };
+Relate.transform.artists = function (item, collection) { return new Artist(item); };
 ```
+
+#### .defaultTransform
+
+A transformation function executed for every collection, unless that collection has a specific transformation function set in `Relate.transform`.
 
 ### Collection
 
