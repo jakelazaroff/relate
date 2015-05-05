@@ -146,13 +146,18 @@ Relate.collection.exists(<span class="pl-s"><span class="pl-pds">'</span>labels<
 <h4>
 <a id="transform" class="anchor" href="#transform" aria-hidden="true"><span class="octicon octicon-link"></span></a>.transform</h4>
 
-<p>An object containing transformation functions executed on each item as it's imported into a collection. The properties in <code>Relate.transform</code> correspond to collection names. The transformation function receives the item's raw properties as its argument and must return an object to be used as the item.</p>
+<p>An object containing transformation functions executed on each item as it's imported into a collection. The properties in <code>Relate.transform</code> correspond to collection names. The transformation function receives the item's raw properties and the collection to which it will be added, and must return an object to be used as the item.</p>
 
 <p>Transforms must be set before data is imported.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> <span class="pl-en">Artist</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () { <span class="pl-c">/* ... */</span> };
 
-<span class="pl-c1">Relate.transform</span>.<span class="pl-en">artists</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-smi">item</span>) { <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">Artist</span>(item); };</pre></div>
+<span class="pl-c1">Relate.transform</span>.<span class="pl-en">artists</span> <span class="pl-k">=</span> <span class="pl-k">function</span> (<span class="pl-smi">item</span>, <span class="pl-smi">collection</span>) { <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">Artist</span>(item); };</pre></div>
+
+<h4>
+<a id="defaulttransform" class="anchor" href="#defaulttransform" aria-hidden="true"><span class="octicon octicon-link"></span></a>.defaultTransform</h4>
+
+<p>A transformation function executed for every collection, unless that collection has a specific transformation function set in <code>Relate.transform</code>.</p>
 
 <h3>
 <a id="collection" class="anchor" href="#collection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Collection</h3>
