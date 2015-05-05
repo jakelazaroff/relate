@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.4.1';
+  Relate.VERSION = '0.5.0';
 
   var transform = Relate.transform = {};
   var map = Relate.map = {};
@@ -27,25 +27,25 @@
     self.map = options.map || {};
   };
 
-  Collection.prototype.add = function (entity) {
+  Collection.prototype.add = function (item) {
     var self = this;
 
-    if (self.store[entity.id])
-      throw new Error('Entity with id ' + entity.id + ' already exists in collection "' + self.name + '".');
+    if (self.store[item.id])
+      throw new Error('Item with id ' + item.id + ' already exists in collection "' + self.name + '".');
 
     if (self.transform)
-      entity = self.transform(entity);
+      item = self.transform(item);
 
-    Relate.mixin(entity, self);
+    Relate.mixin(item, self);
 
-    self.store[entity.id] = entity;
+    self.store[item.id] = item;
   };
 
-  Collection.prototype.import = function (entities) {
+  Collection.prototype.import = function (items) {
     var self = this;
 
-    entities.forEach(function (entity) {
-      self.add(entity);
+    items.forEach(function (item) {
+      self.add(item);
     });
   };
 
@@ -79,9 +79,9 @@
     else if (isObject(query))
       return self.get(
         keys(self.store).filter(function (id) {
-          var entity = self.store[id];
+          var item = self.store[id];
           for (var key in query)
-            if (query[key] !== entity[key])
+            if (query[key] !== item[key])
               return false;
           return true;
         })
@@ -125,13 +125,13 @@
     });
   };
 
-  // Relate.Entity
+  // Relate.Item
 
-  var Entity = Relate.Entity = {};
+  var Item = Relate.Item = {};
 
-  Entity.prefix = undefined;
+  Item.prefix = undefined;
 
-  Entity.get = function (collection, key) {
+  Item.get = function (collection, key) {
     var self = this,
         name = collection.key(key);
 
@@ -141,12 +141,12 @@
       return self[key];
   };
 
-  Relate.mixin = function (entity, collection) {
+  Relate.mixin = function (item, collection) {
 
-    var destination = Entity.prefix ? entity[Entity.prefix] = {} : entity;
+    var destination = Item.prefix ? item[Item.prefix] = {} : item;
 
     ['get'].forEach(function (method) {
-      destination[method] = Entity[method].bind(entity, collection);
+      destination[method] = Item[method].bind(item, collection);
     });
   };
 
