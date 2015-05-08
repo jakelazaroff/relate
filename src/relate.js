@@ -10,7 +10,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.4';
+  Relate.VERSION = '0.6.5';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
@@ -118,9 +118,10 @@
   };
 
   Relate.import = function (data) {
-    keys(data).forEach(function (collection) {
-      Relate.collection.create(collection)
-        .import(data[collection]);
+    keys(data).map(function (name) {
+      return Relate.collection.create(name);
+    }).forEach(function (collection) {
+      collection.import(data[collection.name]);
     });
   };
 
