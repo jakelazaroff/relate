@@ -1,6 +1,6 @@
 {
   "name": "relate",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "main": "src/relate.js",
   "license": "MIT",
   "ignore": [

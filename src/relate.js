@@ -10,7 +10,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.5';
+  Relate.VERSION = '0.6.6';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
@@ -160,7 +160,8 @@
   if (typeof define === 'function' && define.amd)
     define([], function () { return Relate; });
   else if (typeof exports !== 'undefined')
-    exports.Relate = Relate;
+    if (typeof module !== 'undefined' && module.exports)
+      exports = module.exports = Relate;
   else
     root.Relate = Relate;
 
