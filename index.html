@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Relate</h1>
-      <h2 class="project-tagline">Relate is a tiny client-side relational document store.</h2>
+      <h2 class="project-tagline">Relate is a tiny client-side relational datastore.</h2>
       <a href="https://github.com/jakelazaroff/relate" class="btn">View on GitHub</a>
       <a href="https://github.com/jakelazaroff/relate/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/jakelazaroff/relate/tarball/master" class="btn">Download .tar.gz</a>
@@ -24,7 +24,9 @@
 
 <p><a href="http://badge.fury.io/bo/relate"><img src="https://badge.fury.io/bo/relate.svg" alt="Bower version"></a></p>
 
-<p><strong>Relate</strong> is a tiny client-side relational document store. It's useful for web applications with static data for which there are still relationships — for example, a record label might have a website in which there are artists, albums and songs, all of which relate to each other.</p>
+<p><strong>Relate</strong> is a tiny client-side relational datastore. It's useful for web applications with static relational data, allowing you to import JSON data, create collections of objects, define relations between them, and easily traverse the relationship graph from your application code. <strong>Relate</strong> is lightweight, dependency-free and framework-agnostic, easily compatible with applications built with Angular, React and more.</p>
+
+<p>Note that while objects and their relationships can be modified, <strong>Relate</strong> works best with a predefined dataset that doesn't change during the application's runtime. If your application involves changing data, consider a more robust relational framework such as <a href="http://backbonejs.org">Backbone</a> paired with <a href="http://backbonerelational.org">Backbone-relational</a>.</p>
 
 <h2>
 <a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
@@ -104,7 +106,7 @@
 <strong>map</strong>: an object mapping properties on the collection's items to other collections</li>
 </ul>
 
-<p><img class="emoji" title=":speech_balloon:" alt=":speech_balloon:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4ac.png" height="20" width="20" align="absmiddle"> Shouldn't need to be called manually, since <code>Relate.import</code> will create collections automatically.</p>
+<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2757.png" height="20" width="20" align="absmiddle"> <code>Relate.import</code> will create collections automatically.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> <span class="pl-en">Song</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () { <span class="pl-c">/* ... */</span> };
 
@@ -130,13 +132,6 @@ Relate.collection.exists(<span class="pl-s"><span class="pl-pds">'</span>labels<
 <p>An object containing mappings between item properties and collection names. The keys in <code>Relate.map</code> correspond  to collection names. Each property in the collection's map object corresponds to a property on that collection's items, and each value corresponds to the name of the target collection.</p>
 
 <div class="highlight highlight-javascript"><pre>Relate.map.songs <span class="pl-k">=</span> { artist<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>artists<span class="pl-pds">'</span></span> };</pre></div>
-
-<h4>
-<a id="mixinitem-collection" class="anchor" href="#mixinitem-collection" aria-hidden="true"><span class="octicon octicon-link"></span></a>.mixin(item, collection)</h4>
-
-<p>Copies the methods defined in <code>Item</code> to <code>item</code>, binding <code>item</code> and <code>collection</code> to each method as <code>this</code> and the first argument, respectively. If <code>Item.prefix</code> is defined, creates an object with that property on <code>item</code> and copies the method there, instead of directly on <code>item</code> itself.</p>
-
-<p><img class="emoji" title=":speech_balloon:" alt=":speech_balloon:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4ac.png" height="20" width="20" align="absmiddle"> Shouldn't need to be called manually, since <code>Collection.add</code> will mix in <code>Item</code> methods automatically.</p>
 
 <h4>
 <a id="noconflict" class="anchor" href="#noconflict" aria-hidden="true"><span class="octicon octicon-link"></span></a>.noConflict()</h4>
@@ -181,7 +176,7 @@ Relate.collection.exists(<span class="pl-s"><span class="pl-pds">'</span>labels<
 
 <p>Given an object <code>item</code>, executes the collection's transformation function on it, mixes in the <code>Item</code> methods, adds it to the collection and returns it. If an item with the same ID already exists in the collection, throws an error.</p>
 
-<p><img class="emoji" title=":speech_balloon:" alt=":speech_balloon:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4ac.png" height="20" width="20" align="absmiddle"> Shouldn't need to be called manually, since <code>Collection.import</code> will iterate over the array of items and add them.</p>
+<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2757.png" height="20" width="20" align="absmiddle"> <code>Collection.import</code> will iterate over an array of items and add them automatically.</p>
 
 <div class="highlight highlight-javascript"><pre>Relate.collection(<span class="pl-s"><span class="pl-pds">'</span>artists<span class="pl-pds">'</span></span>).<span class="pl-c1">add</span>({
   id<span class="pl-k">:</span> <span class="pl-c1">1</span>,
@@ -206,7 +201,7 @@ Relate.collection(<span class="pl-s"><span class="pl-pds">'</span>songs<span cla
 
 <p>Takes an array and populates the collection. Each object in the array is used as an item and must have a unique attribute <code>id</code>.</p>
 
-<p><img class="emoji" title=":speech_balloon:" alt=":speech_balloon:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4ac.png" height="20" width="20" align="absmiddle"> Shouldn't need to be called manually, since <code>Relate.import</code> will import each array of items into a collection automatically.</p>
+<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2757.png" height="20" width="20" align="absmiddle"> <code>Relate.import</code> will import each arrays of items into collections automatically.</p>
 
 <div class="highlight highlight-javascript"><pre>Relate.collection(<span class="pl-s"><span class="pl-pds">'</span>songs<span class="pl-pds">'</span></span>).import([
   {
