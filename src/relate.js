@@ -1,4 +1,5 @@
 ;(function (root) {
+  'use strict';
 
   var keys = Object.keys,
       isArray = Array.isArray,
@@ -9,7 +10,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.2';
+  Relate.VERSION = '0.6.3';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
