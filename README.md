@@ -2,7 +2,9 @@
 
 [![Bower version](https://badge.fury.io/bo/relate.svg)](http://badge.fury.io/bo/relate)
 
-**Relate** is a tiny client-side relational document store. It's useful for web applications with static data for which there are still relationships — for example, a record label might have a website in which there are artists, albums and songs, all of which relate to each other.
+**Relate** is a tiny client-side relational datastore. It's useful for web applications with static relational data, allowing you to import JSON data, create collections of objects, define relations between them, and easily traverse the relationship graph from your application code. **Relate** is lightweight, dependency-free and framework-agnostic, easily compatible with applications built with Angular, React and more.
+
+Note that while objects and their relationships can be modified, **Relate** works best with a predefined dataset that doesn't change during the application's runtime. If your application involves changing data, consider a more robust relational framework such as [Backbone](http://backbonejs.org) paired with [Backbone-relational](http://backbonerelational.org).
 
 ## Dependencies
 
@@ -80,7 +82,7 @@ Creates a collection named `name` and returns it, or throws an error if a collec
 - **transform**: a transformation function executed on each item added to the collection
 - **map**: an object mapping properties on the collection's items to other collections
 
-:speech_balloon: Shouldn't need to be called manually, since `Relate.import` will create collections automatically.
+:exclamation: `Relate.import` will create collections automatically.
 
 ```javascript
 var Song = function () { /* ... */ };
@@ -146,7 +148,7 @@ Creates a collection named `name` and returns it, or throws an error if a collec
 
 Given an object `item`, executes the collection's transformation function on it, mixes in the `Item` methods, adds it to the collection and returns it. If an item with the same ID already exists in the collection, throws an error.
 
-:speech_balloon: Shouldn't need to be called manually, since `Collection.import` will iterate over the array of items and add them.
+:exclamation: `Collection.import` will iterate over an array of items and add them automatically.
 
 ```javascript
 Relate.collection('artists').add({
@@ -173,7 +175,7 @@ Relate.collection('songs').get({ name: 'New Scream' });
 
 Takes an array and populates the collection. Each object in the array is used as an item and must have a unique attribute `id`.
 
-:speech_balloon: Shouldn't need to be called manually, since `Relate.import` will import each array of items into a collection automatically.
+:exclamation: `Relate.import` will import each arrays of items into collections automatically.
 
 ```javascript
 Relate.collection('songs').import([
