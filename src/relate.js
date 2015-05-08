@@ -10,7 +10,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.3';
+  Relate.VERSION = '0.6.4';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
@@ -105,10 +105,10 @@
       throw new Error('Collection "' + name + '" already exists.');
 
     options = options || {};
-    
+
     collections[name] = new Collection(name, {
-      transform : options.transform || transform[name] || Relate.defaultTransform,
-      map : options.map || map[name]
+      transform: options.transform || transform[name] || Relate.defaultTransform,
+      map: options.map || map[name]
     });
     return collections[name];
   };
