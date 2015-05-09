@@ -104,7 +104,7 @@ For each root-level key (in this example, `artists` and `songs`), `Relate.import
 
 The value of each collection key must be an array that contains the collection items. Each item must have a property `id` with a value unique within the collection (so there could be an item in `songs` and `artists` with an `id` of `1`, but not two items in `artists`). Passing an `id` to `Collection.get` returns the item with that ID in that collection.
 
-Each item has a method `get` that will return either the value of the property passed, or the related item from its collection. Calling `get('artists')` on a song will return its related artist,, while calling `get('name')` on that artist will return its name.
+Each item has a method `get` that will return either the value of the property passed, or the related item from its collection. Calling `get('artists')` on a song will return its related artist, while calling `get('name')` on that artist will return its name.
 
 If one of the Item methods already exists as a property on your items, it'll be overwritten. To prevent this, you can set `Relate.Item.prefix`. Relate will create that property on each item and mix the methods in there.
 
@@ -181,6 +181,7 @@ By default, items are just objects with a few Relate methods (such as `get`) mix
 ```javascript
 function Song (properties) { /* ... */ }
 Song.prototype.play = function () { /* ... */ };
+
 Relate.transform.songs = function (item) {
   return new Song(item);
 };
@@ -200,6 +201,7 @@ To apply a transform to every collection, you can assign a function to `Relate.d
 
 ```javascript
 function Model (properties) { /* ... */ }
+
 Relate.defaultTransform = function (item) {
   return new Model(item);
 };
