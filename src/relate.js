@@ -4,13 +4,12 @@
   var keys = Object.keys,
       isArray = Array.isArray,
       isObject = function (obj) {
-        var type = typeof obj;
-        return type === 'function' || type === 'object' && !!obj;
+        return typeof obj === 'object' && !!obj;
       };
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.6';
+  Relate.VERSION = '0.6.7';
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
