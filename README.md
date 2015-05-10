@@ -290,6 +290,12 @@ An object containing mappings between item properties and collection names. The 
 Relate.map.songs = { artist: 'artists' };
 ```
 
+#### .mixin
+
+A boolean flag used to determine whether `Item` methods are mixed in after an item is transformed. Defaults to true.
+
+:exclamation: Should not be set to `false` unless `Item` methods are manually applied in a transform.
+
 #### .noConflict()
 
 If it was set on a global object, restores `Relate` to its prior value and returns it.
