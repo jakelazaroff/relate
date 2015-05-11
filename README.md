@@ -12,7 +12,7 @@ None! :tada:
 
 ## Installation
 
-Install manually: just copy `src/relate.js` wherever you'd like.
+Install manually: just copy `dist/relate.min.js` wherever you'd like.
 
 Install using Bower:
 
@@ -23,7 +23,7 @@ bower install --save relate
 Load in a browser:
 
 ```html
-<script src="relate.js"></script>
+<script src="relate.min.js"></script>
 ```
 
 Load using Node.js
