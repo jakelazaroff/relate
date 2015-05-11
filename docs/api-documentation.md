@@ -2,6 +2,8 @@
 
 ## Relate
 
+**Relate** is the library object. It provides methods for importing data; configuring, creating and retrieving collections; as well as a few flags and utility methods. Any of the classes contained in Relate can be instantiated on their own, but since Relate depends on a centralized data store to function, most interaction with the library should be done through the Relate object.
+
 ### .import(data)
 
 Takes an object and populates the Relate datastore. The root object's properties are used as the collection names; its values are arrays of objects used as collection items. Each item must have an attribute `id` unique within its collection.
@@ -105,6 +107,8 @@ A transformation function executed for every collection, unless that collection 
 
 ## Collection
 
+**Collections** are stores for items of the same type. They provide methods for importing and retrieving items stored within. Each collection has a unique name, as well as a map that allows item properties to be mapped to arbitrary collections and a transform function that alters items as they're imported.
+
 ### Collection(name[, options])
 
 Creates a collection named `name` and returns it, or throws an error if a collection with that name already exists.
@@ -178,6 +182,8 @@ Relate.collection('songs').map();
 
 ## Item
 
+**Items** are the bread and butter of Relate. Each one is an object in a collection, holding both data from a dataset as well as Relations that describe how it relates to other items. Item methods are the programmer's interface to these relationships. These are mixed in on top of the objects that come directly from the dataset.
+
 ### .get(key)
 
 Given a property `key` that exists on an item, returns either the related item in the corresponding collection or property's value.
@@ -199,3 +205,25 @@ Relate.Item.prefix = 'relate';
 Relate.collection('songs').get(1).relate.get('artist');
 // Artist {id: 1, name: "Turnover", songs: Array[2], relate: Object}
 ```
+
+## Relation
+
+**Relations** are used to implement relationships between items. Assigned to item properties that correspond to collections, it is instantiated with the IDs of the related items and a reference to the collection in which they're stored.
+
+By default, Relation only provides a method for accessing the related items; however, it can be extended to provide more advanced functionality.
+
+### .init(collection, related)
+
+Called when a Relation is instantiated. Stores the passed collection and IDs of related items as members.
+
+### .collection
+
+A reference to the collection in which the related items are stored.
+
+### .related
+
+The ID (or IDs) of the related items.
+
+### .get()
+
+Returns the related items from their collection.
