@@ -375,32 +375,18 @@ Relate.collection('songs').import([
 ]);
 ```
 
-#### .key(key)
+#### .map()
 
-Returns the collection name mapped to property `key`, if it exists, or returns `key` if it corresponds to an unmapped collection. Otherwise, returns `undefined`.
-
-```javascript
-Relate.map.songs = { artist: 'artists' };
-
-Relate.collection('songs').key('artist');
-// "artists"
-Relate.collection('songs').key('songs');
-// "songs"
-Relate.collection('songs').key('name');
-// undefined
-```
-
-#### .mapped(key)
-
-Returns true if a mapping exists in the collection for property `key`, or false if it does not.
+Returns a map of all mapped keys to collection names, mapping the collection name to itself if a mapping for that collection is undefined.
 
 ```javascript
 Relate.map.songs = { artist: 'artists' };
 
-Relate.collection('songs').key('artist');
-// true
-Relate.collection('songs').key('songs');
-// false
+Relate.collection('songs').map();
+// {
+//   artist: 'artists',
+//   songs: 'songs'
+// }
 ```
 
 ### Item
