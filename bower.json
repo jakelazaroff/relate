@@ -1,7 +1,7 @@
 {
   "name": "relate",
   "version": "0.7.0",
-  "main": "src/relate.js",
+  "main": "dist/relate.min.js",
   "license": "MIT",
   "ignore": [
     "**/.*"
