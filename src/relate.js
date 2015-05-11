@@ -9,12 +9,35 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.6.8';
+  Relate.VERSION = '0.7.0';
+
+  // Maps
+
+  var map = Relate.map = {};
+
+  Relate._map = function (map) {
+
+    var inverse = {},
+        results = {};
+
+    keys(map || {}).forEach(function (key) {
+      inverse[map[key]] = key;
+    });
+
+    keys(Relate.collections).forEach(function (name) {
+      if (inverse[name])
+        results[inverse[name]] = name;
+      else
+        results[name] = name;
+    });
+
+    return results;
+  };
+
+  // Transforms
 
   var transform = Relate.transform = {};
   var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
-
-  var map = Relate.map = {};
 
   // Relate.Collection
 
@@ -25,8 +48,14 @@
     self.name = name;
     self.store = {};
 
-    self._transform = options.transform;
     self._map = options.map || {};
+    self._transform = options.transform;
+  };
+
+  Collection.prototype.map = function () {
+    var self = this;
+
+    return Relate._map(self._map);
   };
 
   Collection.prototype.add = function (item) {
@@ -49,26 +78,6 @@
     items.forEach(function (item) {
       self.add(item);
     });
-  };
-
-  Collection.prototype.mapped = function (key) {
-    var self = this;
-
-    return keys(self._map)
-      .map(function (key) {
-        return self._map[key];
-      }).indexOf(key) !== -1;
-  };
-
-  Collection.prototype.key = function (key) {
-    var self = this;
-
-    if (self._map[key])
-      return self._map[key];
-    else if (Relate.collection.exists(key) && !self.mapped(key))
-      return key;
-    else
-      return undefined;
   };
 
   Collection.prototype.get = function (query) {
@@ -97,8 +106,8 @@
   Relate.collection = function (name) {
     if (!Relate.collection.exists(name))
       throw new Error('Collection "' + name + '" does not exist.');
-    
-    return collections[name]; 
+
+    return collections[name];
   };
 
   Relate.collection.create = function (name, options) {
@@ -126,30 +135,64 @@
     });
   };
 
+  // Relate.Relation
+
+  var Relation = Relate.Relation = function () {
+    if (this.init)
+      this.init.apply(this, arguments);
+  };
+
+  Relation.prototype.related = undefined;
+
+  Relation.prototype.init = function (collection, related) {
+    var self = this;
+
+    self.collection = collection;
+
+    if (related)
+      self.related = related;
+  };
+
+  Relation.prototype.get = function () {
+    var self = this;
+
+    return self.collection.get(self.related);
+  };
+
   // Relate.Item
 
   var Item = Relate.Item = {};
 
   Item.prefix = undefined;
 
-  Item.get = function (collection, key) {
+  Item.get = function (key) {
     var self = this,
-        name = collection.key(key);
+        value = self[key];
 
-    if (name)
-      return Relate.collection(name).get(self[key]);
+    if (value instanceof Relation)
+      return value.get();
     else
-      return self[key];
+      return value;
   };
 
   Relate.mixin = true;
 
   Relate._mixin = function (item, collection) {
 
+    var map = collection.map();
+
+    keys(map).forEach(function (property) {
+      if (item[property])
+        item[property] = new Relation(
+          Relate.collection(map[property]),
+          item[property]
+        );
+    });
+
     var destination = Item.prefix ? item[Item.prefix] = {} : item;
 
     ['get'].forEach(function (method) {
-      destination[method] = Item[method].bind(item, collection);
+      destination[method] = Item[method].bind(item);
     });
   };
 
