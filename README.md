@@ -1,6 +1,6 @@
 # Relate
 
-[![Bower version](https://badge.fury.io/bo/relate.svg)](http://badge.fury.io/bo/relate)
+[![Bower version](https://badge.fury.io/bo/relate.svg)](http://badge.fury.io/bo/relate) [![Build Status](https://travis-ci.org/jakelazaroff/relate.svg)](https://travis-ci.org/jakelazaroff/relate)
 
 **Relate** is a tiny client-side relational datastore. It's useful for web applications with static relational data, allowing you to import JSON data, create collections of objects, define relations between them, and easily traverse the relationship graph from your application code. **Relate** is lightweight, dependency-free and framework-agnostic, easily compatible with applications built with Angular, React and more.
 
