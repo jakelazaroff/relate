@@ -5,6 +5,9 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 
+// karma
+var karma = require('karma').server;
+
 gulp.task('build', function () {
   return gulp.src('src/relate.js')
     .pipe(uglify())
@@ -12,4 +15,11 @@ gulp.task('build', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['build']);
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, function() {
+    done();
+  });
+});
