@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.7.3';
+  Relate.VERSION = '/*VERSION*/'; // automatically generated in build process
 
   // Maps
 
