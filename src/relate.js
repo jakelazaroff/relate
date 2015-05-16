@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.7.0';
+  Relate.VERSION = '0.7.1';
 
   // Maps
 
@@ -37,7 +37,7 @@
   // Transforms
 
   var transform = Relate.transform = {};
-  var defaultTransform = Relate.defaultTransform = function (item, collection) { return item; };
+  Relate.defaultTransform = function (item, collection) { return item; };
 
   // Relate.Collection
 
