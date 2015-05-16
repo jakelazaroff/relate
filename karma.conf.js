@@ -4,7 +4,6 @@ module.exports = function (config) {
     frameworks: ['mocha', 'chai', 'browserify'],
     reporters: ['mocha'],
     files: [
-      __dirname + 'bower_components/*.js',
       __dirname + '/src/relate.js',
       __dirname + '/test/*.js'
     ],
