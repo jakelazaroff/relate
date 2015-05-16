@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.7.1';
+  Relate.VERSION = '0.7.2';
 
   // Maps
 
@@ -205,9 +205,8 @@
 
   if (typeof define === 'function' && define.amd)
     define([], function () { return Relate; });
-  else if (typeof exports !== 'undefined')
-    if (typeof module !== 'undefined' && module.exports)
-      exports = module.exports = Relate;
+  else if (typeof module !== 'undefined' && module.exports)
+    module.exports = Relate;
   else
     root.Relate = Relate;
 
