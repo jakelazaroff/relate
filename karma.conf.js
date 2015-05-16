@@ -2,14 +2,15 @@ module.exports = function (config) {
   config.set({
     browsers: ['PhantomJS'],
     frameworks: ['mocha', 'chai', 'browserify'],
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage'],
     files: [
       __dirname + '/src/relate.js',
       __dirname + '/test/*.js'
     ],
     preprocessors: {
-      'test/*.js': [ 'browserify' ],
-      'bower_components/*.js': [ 'browserify' ]
+      'src/relate.js': ['coverage'],
+      'test/*.js': ['browserify'],
+      'bower_components/*.js': ['browserify']
     },
   });
 };
