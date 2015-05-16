@@ -9,7 +9,7 @@
 
   var Relate = {};
 
-  Relate.VERSION = '0.7.2';
+  Relate.VERSION = '0.7.3';
 
   // Maps
 
@@ -42,8 +42,8 @@
   // Relate.Collection
 
   var Collection = Relate.Collection = function (name, options) {
-    var self = this,
-        options = options || {};
+    var self = this;
+    options = options || {};
 
     self.name = name;
     self.store = {};
@@ -69,7 +69,7 @@
     if (Relate.mixin)
       Relate._mixin(item, self);
 
-    return self.store[item.id] = item;
+    return (self.store[item.id] = item);
   };
 
   Collection.prototype.import = function (items) {
