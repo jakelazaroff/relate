@@ -3,9 +3,8 @@
 
   var keys = Object.keys,
       isArray = Array.isArray,
-      isObject = function (obj) {
-        return typeof obj === 'object' && !!obj;
-      };
+      isObject = function (obj) { return typeof obj === 'object' && !!obj; },
+      isFunction = function (func) { return typeof func === 'function' && !!func; };
 
   var Relate = {};
 
@@ -86,12 +85,17 @@
       return query.map(function (id) {
         return self.store[id];
       });
+    else if (isFunction(query))
+      return self.get(
+        keys(self.store).filter(function (id) {
+          return query(self.store[id]);
+        })
+      );
     else if (isObject(query))
       return self.get(
         keys(self.store).filter(function (id) {
-          var item = self.store[id];
           for (var key in query)
-            if (query[key] !== item[key])
+            if (query[key] !== self.store[id][key])
               return false;
           return true;
         })
