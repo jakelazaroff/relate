@@ -17,17 +17,16 @@
 
   Relate._map = function (map) {
 
-    var inverse = {},
+    var mapped = {},
         results = {};
 
     keys(map || {}).forEach(function (key) {
-      inverse[map[key]] = key;
+      mapped[map[key]] = true;
+      results[key] = map[key];
     });
 
     keys(Relate.collections).forEach(function (name) {
-      if (inverse[name])
-        results[inverse[name]] = name;
-      else
+      if (!mapped[name])
         results[name] = name;
     });
 
