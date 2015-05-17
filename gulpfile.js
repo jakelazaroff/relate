@@ -5,7 +5,6 @@ var argv = require('yargs').argv;
 var gulp = require('gulp');
 
 // plugins
-var filter = require('gulp-filter');
 var replace = require('gulp-replace');
 var rename = require("gulp-rename");
 var eol = require('gulp-eol');
@@ -76,8 +75,10 @@ gulp.task('commit', ['build'], function () {
 
   return gulp.src(['bower.json', 'dist/relate.min.js'])
     .pipe(git.commit('Bump version for ' + releaseType() + ' release ' + version()))
-    .pipe(filter('bower.json'))
-    .pipe(tag({prefix: ''}));
+    .pipe(tag({
+      prefix: '',
+      version: version(),
+    }));
 });
 
 gulp.task('release', ['commit'], function() {
