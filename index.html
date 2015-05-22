@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Relate</title>
+    <title>Relate by jakelazaroff</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -22,7 +22,7 @@
       <h1>
 <a id="relate" class="anchor" href="#relate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Relate</h1>
 
-<p><a href="http://badge.fury.io/bo/relate"><img src="https://badge.fury.io/bo/relate.svg" alt="Bower version"></a></p>
+<p><a href="http://badge.fury.io/bo/relate"><img src="https://badge.fury.io/bo/relate.svg" alt="Bower version"></a> <a href="https://travis-ci.org/jakelazaroff/relate"><img src="https://travis-ci.org/jakelazaroff/relate.svg" alt="Build Status"></a></p>
 
 <p><strong>Relate</strong> is a tiny client-side relational datastore. It's useful for web applications with static relational data, allowing you to import JSON data, create collections of objects, define relations between them, and easily traverse the relationship graph from your application code. <strong>Relate</strong> is lightweight, dependency-free and framework-agnostic, easily compatible with applications built with Angular, React and more.</p>
 
@@ -36,7 +36,7 @@
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Install manually: just copy <code>src/relate.js</code> wherever you'd like.</p>
+<p>Install manually: just copy <code>dist/relate.min.js</code> wherever you'd like.</p>
 
 <p>Install using Bower:</p>
 
@@ -45,7 +45,11 @@
 
 <p>Load in a browser:</p>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>relate.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>relate.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Load using Node.js</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> Relate <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Relate<span class="pl-pds">'</span></span>);</pre></div>
 
 <p>Load using AMD:</p>
 
