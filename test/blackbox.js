@@ -26,6 +26,44 @@ describe('Black Box', function () {
     });
   });
 
+  describe('Collection', function () {
+
+    describe('Getters', function () {
+
+      it('should return an item when passed an ID', function () {
+        setup();
+
+        Relate.collection('artists').get(1).should.equal(data.artists[0]);
+      });
+
+      it('should return undefined when passed an ID not in the collection', function () {
+        setup();
+
+        should.not.exist(Relate.collection('artists').get(0));
+      });
+
+      it('should return an array of items when passed an array of IDs', function () {
+        setup();
+
+        var artists = Relate.collection('artists').get([1, 2]);
+
+        artists.length.should.equal(2);
+        artists.forEach(function (artist, index) {
+          artists[index].should.equal(data.artists[index]);
+        });
+      });
+
+      it('should return an array of matching items when passed an object', function () {
+        setup();
+
+        var artists = Relate.collection('artists').get({name: 'Turnover'});
+
+        artists.length.should.equal(1);
+        artists.should.include.something.that.equals(data.artists[0]);
+      });
+    });
+  });
+
   describe('Item', function () {
 
     describe('Getters', function () {

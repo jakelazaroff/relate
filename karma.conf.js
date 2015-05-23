@@ -1,7 +1,7 @@
 module.exports = function (config) {
   config.set({
     browsers: ['PhantomJS'],
-    frameworks: ['mocha', 'chai', 'browserify'],
+    frameworks: ['mocha', 'chai-things', 'chai', 'browserify'],
     reporters: ['mocha', 'coverage'],
     files: [
       __dirname + '/src/relate.js',
