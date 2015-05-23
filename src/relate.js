@@ -1,11 +1,13 @@
 ;(function (root) {
   'use strict';
 
+  // cache functions for later use
   var keys = Object.keys,
       isArray = Array.isArray,
       isObject = function (obj) { return typeof obj === 'object' && !!obj; },
       isFunction = function (func) { return typeof func === 'function' && !!func; };
 
+  // create the global relate object
   var Relate = {};
 
   Relate.VERSION = '/*VERSION*/'; // automatically generated in build process

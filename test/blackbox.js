@@ -1,13 +1,13 @@
-var vendor = require('./vendor');
+require('./vendor');
 
 var Relate = require('../src/relate.js');
 var data = require('./data.js');
 
-describe('Black Box', function () {
+var utils = require('./utils.js').create(Relate, data),
+    setup = utils.setup,
+    teardown = utils.teardown;
 
-  it('should be defined as a global object', function () {
-    expect(Relate).to.exist;
-  });
+describe('Black Box', function () {
 
   describe('Importing', function () {
 
@@ -87,6 +87,36 @@ describe('Black Box', function () {
         );
       });
 
+      it('should allow multiple keys to be mapped to the same collection', function () {
+        setup({
+          map: {
+            songs: {artist: 'artists', composer: 'artists'}
+          }
+        }, {
+          artists: [
+            {
+              id: 1,
+              name: 'Turnover',
+              songs: [1],
+            }
+          ],
+          songs: [
+            {
+              id: 1,
+              name: 'Most Of The Time',
+              artist: 1,
+              composer: 1
+            }
+          ]
+        });
+
+        var song = Relate.collection('songs').get(1);
+
+        song.get('artist').should.equal(
+          song.get('composer')
+        );
+      });
+
       it('should return the key\'s value if it\'s not a relation', function () {
         setup();
 
@@ -110,39 +140,3 @@ describe('Black Box', function () {
     });
   });
 });
-
-// setup and teardown functions
-
-var originals = {
-  defaultTransform: Relate.defaultTransform,
-  mixin: true
-};
-
-function setup (options, dataset) {
-
-  teardown();
-
-  for (var option in options)
-    if (typeof options[option] === 'object')
-      for (var prop in options[option])
-        Relate[option][prop] = options[option][prop];
-    else
-      Relate[option] = options[option];
-
-  Relate.import(dataset || data);
-};
-
-function teardown () {
-  [
-    Relate.collections,
-    Relate.map,
-    Relate.transform
-  ].forEach(function (obj) {
-    for (var prop in obj)
-      delete obj[prop];
-  });
-
-  Object.keys(originals).forEach(function(prop) {
-    Relate[prop] = originals[prop];
-  });
-};
