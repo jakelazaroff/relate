@@ -61,6 +61,17 @@ describe('Black Box', function () {
         artists.length.should.equal(1);
         artists.should.include.something.that.equals(data.artists[0]);
       });
+
+      it('should return an array of matching items when passed a predicate function', function () {
+        setup();
+
+        var artists = Relate.collection('artists').get(function (item) {
+          return item.get('name') === 'Turnover';
+        });
+
+        artists.length.should.equal(1);
+        artists.should.include.something.that.equals(data.artists[0]);
+      });
     });
   });
 
