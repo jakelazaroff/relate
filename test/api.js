@@ -7,7 +7,7 @@ var utils = require('./utils.js').create(Relate),
 
 var data;
 
-describe('Black Box', function () {
+describe('API', function () {
 
   describe('Importing', function () {
 
