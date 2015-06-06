@@ -1,18 +1,18 @@
 require('./vendor');
 
 var Relate = require('../src/relate.js');
-var data = require('./data.js');
 
-var utils = require('./utils.js').create(Relate, data),
-    setup = utils.setup,
-    teardown = utils.teardown;
+var utils = require('./utils.js').create(Relate),
+    setup = utils.setup;
+
+var data;
 
 describe('Black Box', function () {
 
   describe('Importing', function () {
 
     beforeEach(function () {
-      setup();
+      data = setup();
     });
 
     it('should create collections using the data root keys as names', function () {
@@ -31,19 +31,19 @@ describe('Black Box', function () {
     describe('Getters', function () {
 
       it('should return an item when passed an ID', function () {
-        setup();
+        data = setup();
 
         Relate.collection('artists').get(1).should.equal(data.artists[0]);
       });
 
       it('should return undefined when passed an ID not in the collection', function () {
-        setup();
+        data = setup();
 
         should.not.exist(Relate.collection('artists').get(0));
       });
 
       it('should return an array of items when passed an array of IDs', function () {
-        setup();
+        data = setup();
 
         var artists = Relate.collection('artists').get([1, 2]);
 
@@ -53,24 +53,41 @@ describe('Black Box', function () {
         });
       });
 
-      it('should return an array of matching items when passed an object', function () {
-        setup();
-
-        var artists = Relate.collection('artists').get({name: 'Turnover'});
-
-        artists.length.should.equal(1);
-        artists.should.include.something.that.equals(data.artists[0]);
-      });
-
       it('should return an array of matching items when passed a predicate function', function () {
-        setup();
-
-        var artists = Relate.collection('artists').get(function (item) {
-          return item.get('name') === 'Turnover';
+        data = setup({
+          map: {
+            songs: {artist: 'artists'}
+          }
         });
 
-        artists.length.should.equal(1);
-        artists.should.include.something.that.equals(data.artists[0]);
+        var songs = Relate.collection('songs').get(function (item) {
+          return item.get('artist').get('name') === 'Turnover';
+        });
+
+        songs.length.should.equal(2);
+        songs.should.include.something.that.equals(data.songs[0]);
+        songs.should.include.something.that.equals(data.songs[1]);
+
+        songs.should.not.include.something.that.equals(data.songs[3]);
+        songs.should.not.include.something.that.equals(data.songs[4]);
+      });
+
+      it('should return an array of matching items when passed an object', function () {
+        data = setup({
+          map: {
+            songs: {artist: 'artists'}
+          }
+        });
+
+        var artist = Relate.collection('artists').get(1),
+            songs = Relate.collection('songs').get({artist: artist});
+
+        songs.length.should.equal(2);
+        songs.should.include.something.that.equals(data.songs[0]);
+        songs.should.include.something.that.equals(data.songs[1]);
+
+        songs.should.not.include.something.that.equals(data.songs[3]);
+        songs.should.not.include.something.that.equals(data.songs[4]);
       });
     });
   });
@@ -80,7 +97,7 @@ describe('Black Box', function () {
     describe('Getters', function () {
 
       it('should return the related item if one exists', function () {
-        setup({}, {
+        data = setup({}, {
           artists: [
             {
               id: 1,
@@ -107,7 +124,7 @@ describe('Black Box', function () {
       });
 
       it('should return an array of related items if more than one exists', function () {
-        setup();
+        data = setup();
 
         var songs = Relate.collection('artists').get(1).get('songs');
 
@@ -121,7 +138,7 @@ describe('Black Box', function () {
       });
 
       it('should use a mapped key if one exists', function () {
-        setup({
+        data = setup({
           map: {
             songs: {artist: 'artists'}
           }
@@ -137,7 +154,7 @@ describe('Black Box', function () {
       });
 
       it('should allow multiple keys to be mapped to the same collection', function () {
-        setup({
+        data = setup({
           map: {
             songs: {artist: 'artists', composer: 'artists'}
           }
@@ -167,13 +184,13 @@ describe('Black Box', function () {
       });
 
       it('should return the key\'s value if it\'s not a relation', function () {
-        setup();
+        data = setup();
 
         Relate.collection('songs').get(1).get('title').should.equal('Most Of The Time');
       });
 
       it('should return the key\'s value if the key is a collection that\'s been mapped elsewhere', function () {
-        setup({
+        data = setup({
           map: {
             songs: {artist: 'artists'}
           }

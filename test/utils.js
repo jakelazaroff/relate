@@ -1,4 +1,5 @@
-var Relate, data;
+var Relate;
+var data = require('./data.js');
 
 var originals = {};
 var createOriginals = function () {
@@ -7,8 +8,8 @@ var createOriginals = function () {
 };
 
 var setup = function (options, dataset) {
-
   teardown();
+  dataset = dataset || data.export();
 
   for (var option in options)
     if (typeof options[option] === 'object')
@@ -17,7 +18,9 @@ var setup = function (options, dataset) {
     else
       Relate[option] = options[option];
 
-  Relate.import(dataset || data);
+  Relate.import(dataset);
+
+  return dataset;
 };
 
 var teardown = function () {
@@ -36,9 +39,8 @@ var teardown = function () {
 };
 
 module.exports = {
-  create: function (_Relate, _data) {
+  create: function (_Relate) {
     Relate = _Relate;
-    data = _data;
     createOriginals();
 
     return {
