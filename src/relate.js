@@ -111,14 +111,11 @@
   var collections = Relate.collections = {};
 
   Relate.collection = function (name) {
-    if (!Relate.collection.exists(name))
-      throw new Error('Collection "' + name + '" does not exist.');
-
     return collections[name];
   };
 
   Relate.collection.create = function (name, options) {
-    if (Relate.collection.exists(name))
+    if (Relate.collection(name))
       throw new Error('Collection "' + name + '" already exists.');
 
     options = options || {};
@@ -128,10 +125,6 @@
       map: options.map || map[name]
     });
     return collections[name];
-  };
-
-  Relate.collection.exists = function (name) {
-    return name && name in collections;
   };
 
   Relate.import = function (data) {
