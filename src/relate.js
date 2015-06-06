@@ -95,12 +95,14 @@
       );
     else if (isObject(query))
       return self.get(
-        keys(self.store).filter(function (id) {
-          for (var key in query)
-            if (query[key] !== self.store[id][key])
+        function (item) {
+          for (var key in query) {
+            if (query[key] !== item.get(key))
               return false;
+          }
+
           return true;
-        })
+        }
       );
     else
       return self.store[query];
