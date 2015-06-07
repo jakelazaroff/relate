@@ -11,30 +11,6 @@ var data;
 describe('API', function () {
 
   describe('Relate', function () {
-    describe('.import', function () {
-
-      beforeEach(function () {
-        data = setup();
-      });
-
-      it('should create collections using the data root keys as names', function () {
-
-        var collections = Object.keys(data);
-
-        collections.should.eql(Object.keys(Relate.collections));
-        collections.forEach(function (name) {
-          Relate.collection(name).should.be.an.instanceOf(Relate.Collection);
-        });
-      });
-      it('should create items in the collections using their IDs as keys', function () {
-
-        Object.keys(data).forEach(function (name) {
-          data[name].forEach(function (item) {
-            Relate.collection(name).get(item.id).should.equal(item);
-          });
-        });
-      });
-    });
     describe('.collection', function () {
 
       beforeEach(function () {
@@ -55,13 +31,14 @@ describe('API', function () {
     describe('.collection.create', function () {
 
       var dataset = function () { return clone([{id: 1, artist: 1}]) };
-      var transform = sinon.spy(function (item) { return item; }),
-          fallbackTransform = sinon.spy(function (item) { return item; });
+      var transform = function (item) { return item; },
+          calledTransform = sinon.spy(transform),
+          fallbackTransform = sinon.spy(transform);
 
       function setupTransforms (options) {
         data = setup(options);
 
-        transform.reset();
+        calledTransform.reset();
         fallbackTransform.reset();
       }
 
@@ -85,33 +62,33 @@ describe('API', function () {
         });
 
         Relate.collection.create('musicians', {
-          transform: transform
+          transform: calledTransform
         }).import(dataset());
 
-        transform.should.be.called;
+        calledTransform.should.be.called;
         fallbackTransform.should.not.be.called;
       });
       it('should fall back to Relate.transform.NAME if no transform is passed', function () {
 
         setupTransforms({
-          transform: {musicians: transform},
+          transform: {musicians: calledTransform},
           defaultTransform: fallbackTransform
         });
 
         Relate.collection.create('musicians').import(dataset());
 
-        transform.should.be.called;
+        calledTransform.should.be.called;
         fallbackTransform.should.not.be.called;
       });
-      it('should fall back to Relate.defaultTransform if Relate.transform.NAME is unspecified', function () {
+      it('should fall back to Relate.defaultTransform if Relate.transform.NAME is undefined', function () {
 
         setupTransforms({
-          defaultTransform: transform
+          defaultTransform: calledTransform
         });
 
         Relate.collection.create('musicians').import(dataset());
 
-        transform.should.be.called;
+        calledTransform.should.be.called;
       });
       it('should create a collection with the given map', function () {
 
@@ -147,6 +124,79 @@ describe('API', function () {
       it('should throw an error if a collection with the given name already exists', function () {
 
         expect(function () { Relate.collection.create('artists'); }).to.throw();
+      });
+    });
+    describe('.import', function () {
+
+      beforeEach(function () {
+        data = setup();
+      });
+
+      it('should create collections using the data root keys as names', function () {
+
+        var collections = Object.keys(data);
+
+        collections.should.eql(Object.keys(Relate.collections));
+        collections.forEach(function (name) {
+          Relate.collection(name).should.be.an.instanceOf(Relate.Collection);
+        });
+      });
+      it('should create items in the collections using their IDs as keys', function () {
+
+        Object.keys(data).forEach(function (name) {
+          data[name].forEach(function (item) {
+            Relate.collection(name).get(item.id).should.equal(item);
+          });
+        });
+      });
+      // TODO: should apply maps defined in Relate.map
+      // TODO: should appy transforms defined in Relate.transform
+      // TODO: should apply default transform defined in Relate.defaultTransform
+    });
+    describe('.transform', function () {
+
+      var transform = function(item) { return item; },
+          artistTransform = sinon.spy(transform),
+          songTransform = sinon.spy(transform);
+
+      function checkTransform (transform, items) {
+        transform.callCount.should.equal(items.length);
+        items.forEach(function (item) {
+          transform.should.be.calledWith(item);
+        });
+      }
+
+      afterEach(function () {
+        artistTransform.reset();
+        songTransform.reset();
+      });
+
+      it('should be called once for each item added to the corresponding collection', function () {
+
+        data = setup({
+          transform: {
+            artists: artistTransform,
+            songs: songTransform
+          }
+        });
+
+        checkTransform(artistTransform, data.artists);
+        checkTransform(songTransform, data.songs);
+      });
+
+      it('should take precedence over Relate.defaultTransform', function () {
+
+        data = setup({
+          transform: {
+            artists: artistTransform
+          },
+          defaultTransform: songTransform
+        });
+
+        checkTransform(artistTransform, data.artists);
+        data.artists.forEach(function (item) {
+          songTransform.should.not.be.calledWith(item);
+        });
       });
     });
   });
