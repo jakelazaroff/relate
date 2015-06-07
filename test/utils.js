@@ -9,7 +9,7 @@ var createOriginals = function () {
 
 var setup = function (options, dataset) {
   teardown();
-  dataset = dataset || data.export();
+  dataset = clone(dataset || data);
 
   for (var option in options)
     if (typeof options[option] === 'object')
@@ -38,6 +38,10 @@ var teardown = function () {
   });
 };
 
+var clone = function (json) {
+  return JSON.parse(JSON.stringify(json));
+};
+
 module.exports = {
   create: function (_Relate) {
     Relate = _Relate;
@@ -45,7 +49,8 @@ module.exports = {
 
     return {
       setup: setup,
-      teardown: teardown
+      teardown: teardown,
+      clone: clone
     }
   }
 };

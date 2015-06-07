@@ -1,4 +1,4 @@
-var dataset = {
+module.exports = {
   artists: [
     {
       id: 1,
@@ -34,9 +34,3 @@ var dataset = {
     }
   ]
 };
-
-module.exports = {
-  export: function () {
-    return JSON.parse(JSON.stringify(dataset));
-  }
-}

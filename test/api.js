@@ -3,45 +3,166 @@ require('./vendor');
 var Relate = require('../src/relate.js');
 
 var utils = require('./utils.js').create(Relate),
-    setup = utils.setup;
+    setup = utils.setup,
+    clone = utils.clone;
 
 var data;
 
 describe('API', function () {
 
-  describe('Importing', function () {
+  describe('Relate', function () {
+    describe('.import', function () {
 
-    beforeEach(function () {
-      data = setup();
+      beforeEach(function () {
+        data = setup();
+      });
+
+      it('should create collections using the data root keys as names', function () {
+
+        var collections = Object.keys(data);
+
+        collections.should.eql(Object.keys(Relate.collections));
+        collections.forEach(function (name) {
+          Relate.collection(name).should.be.an.instanceOf(Relate.Collection);
+        });
+      });
+      it('should create items in the collections using their IDs as keys', function () {
+
+        Object.keys(data).forEach(function (name) {
+          data[name].forEach(function (item) {
+            Relate.collection(name).get(item.id).should.equal(item);
+          });
+        });
+      });
     });
+    describe('.collection', function () {
 
-    it('should create collections using the data root keys as names', function () {
+      beforeEach(function () {
+        data = setup();
+      });
 
-      var collections = Object.keys(Relate.collections);
+      it('should return the collection with the given name if one exists', function () {
 
-      collections.should.eql(Object.keys(data));
-      collections.forEach(function (name) {
-        Relate.collections[name].should.be.an.instanceOf(Relate.Collection);
+        var artists = Relate.collection('artists');
+        artists.name.should.equal('artists');
+        artists.should.be.an.instanceOf(Relate.Collection);
+      });
+      it('should return undefined if no collection with the given name exists', function () {
+
+        should.not.exist(Relate.collection('musicians'));
+      });
+    });
+    describe('.collection.create', function () {
+
+      var dataset = function () { return clone([{id: 1, artist: 1}]) };
+      var transform = sinon.spy(function (item) { return item; }),
+          fallbackTransform = sinon.spy(function (item) { return item; });
+
+      function setupTransforms (options) {
+        data = setup(options);
+
+        transform.reset();
+        fallbackTransform.reset();
+      }
+
+      beforeEach(function () {
+        data = setup();
+      });
+
+      it('should create a collection with the given name if none exists', function () {
+
+        Relate.collection.create('musicians');
+
+        var musicians = Relate.collection('musicians');
+        musicians.name.should.equal('musicians');
+        musicians.should.be.an.instanceOf(Relate.Collection);
+      });
+      it('should create a collection with the given transform function', function () {
+
+        setupTransforms({
+          transform: {musicians: fallbackTransform},
+          defaultTransform: fallbackTransform
+        });
+
+        Relate.collection.create('musicians', {
+          transform: transform
+        }).import(dataset());
+
+        transform.should.be.called;
+        fallbackTransform.should.not.be.called;
+      });
+      it('should fall back to Relate.transform.NAME if no transform is passed', function () {
+
+        setupTransforms({
+          transform: {musicians: transform},
+          defaultTransform: fallbackTransform
+        });
+
+        Relate.collection.create('musicians').import(dataset());
+
+        transform.should.be.called;
+        fallbackTransform.should.not.be.called;
+      });
+      it('should fall back to Relate.defaultTransform if Relate.transform.NAME is unspecified', function () {
+
+        setupTransforms({
+          defaultTransform: transform
+        });
+
+        Relate.collection.create('musicians').import(dataset());
+
+        transform.should.be.called;
+      });
+      it('should create a collection with the given map', function () {
+
+        data = setup({
+          map: {musicians: {artist: 'songs'}}
+        });
+
+        Relate.collection.create('musicians', {
+          map: {artist: 'artists'}
+        }).import(dataset());
+
+        Relate.collection('musicians').get(1).get('artist').should.equal(
+          Relate.collection('artists').get(1)
+        );
+      });
+      it('should fall back to Relate.map.NAME if no map is passed', function () {
+
+        data = setup({
+          map: {musicians: {artist: 'artists'}}
+        });
+
+        Relate.collection.create('musicians').import(dataset());
+
+        Relate.collection('musicians').get(1).get('artist').should.equal(
+          Relate.collection('artists').get(1)
+        );
+      });
+      it('should return the newly created collection', function () {
+
+        var musicians = Relate.collection.create('musicians');
+        musicians.should.equal(Relate.collection('musicians'));
+      });
+      it('should throw an error if a collection with the given name already exists', function () {
+
+        expect(function () { Relate.collection.create('artists'); }).to.throw();
       });
     });
   });
 
   describe('Collection', function () {
-
-    describe('Getters', function () {
-
+    describe('.get', function () {
       it('should return an item when passed an ID', function () {
         data = setup();
 
         Relate.collection('artists').get(1).should.equal(data.artists[0]);
       });
-
       it('should return undefined when passed an ID not in the collection', function () {
         data = setup();
 
         should.not.exist(Relate.collection('artists').get(0));
       });
-
       it('should return an array of items when passed an array of IDs', function () {
         data = setup();
 
@@ -52,7 +173,6 @@ describe('API', function () {
           artists[index].should.equal(data.artists[index]);
         });
       });
-
       it('should return an array of matching items when passed a predicate function', function () {
         data = setup({
           map: {
@@ -71,7 +191,6 @@ describe('API', function () {
         songs.should.not.include.something.that.equals(data.songs[3]);
         songs.should.not.include.something.that.equals(data.songs[4]);
       });
-
       it('should return an array of matching items when passed an object', function () {
         data = setup({
           map: {
@@ -93,9 +212,7 @@ describe('API', function () {
   });
 
   describe('Item', function () {
-
-    describe('Getters', function () {
-
+    describe('.get', function () {
       it('should return the related item if one exists', function () {
         data = setup({}, {
           artists: [
@@ -122,7 +239,6 @@ describe('API', function () {
           )
         );
       });
-
       it('should return an array of related items if more than one exists', function () {
         data = setup();
 
@@ -136,8 +252,7 @@ describe('API', function () {
           )
         );
       });
-
-      it('should use a mapped key if one exists', function () {
+      it('if the key is mapped to a collection, should return items from the mapped collection', function () {
         data = setup({
           map: {
             songs: {artist: 'artists'}
@@ -152,7 +267,6 @@ describe('API', function () {
           )
         );
       });
-
       it('should allow multiple keys to be mapped to the same collection', function () {
         data = setup({
           map: {
@@ -182,14 +296,12 @@ describe('API', function () {
           song.get('composer')
         );
       });
-
       it('should return the key\'s value if it\'s not a relation', function () {
         data = setup();
 
         Relate.collection('songs').get(1).get('title').should.equal('Most Of The Time');
       });
-
-      it('should return the key\'s value if the key is a collection that\'s been mapped elsewhere', function () {
+      it('should return the key\'s value if the key is the name of a collection that\'s been mapped elsewhere', function () {
         data = setup({
           map: {
             songs: {artist: 'artists'}
