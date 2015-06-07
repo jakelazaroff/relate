@@ -3,6 +3,7 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^2.3.0",
+    "chai-things": "^0.2.0",
     "gulp": "^3.8.8",
     "gulp-bump": "^0.3.0",
     "gulp-eol": "^0.1.1",
