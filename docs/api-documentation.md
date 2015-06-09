@@ -60,17 +60,6 @@ Relate.collection.create('songs', {
 // Relate.Collection {name: "songs", store: Object, add: function…}
 ```
 
-### .collection.exists(name)
-
-Returns true if a collection named `name` exists, or false if it doesn't.
-
-```javascript
-Relate.collection.exists('artists');
-// true
-Relate.collection.exists('labels');
-// false
-```
-
 ### .map
 
 An object containing mappings between item properties and collection names. The keys in `Relate.map` correspond  to collection names. Each property in the collection's map object corresponds to a property on that collection's items, and each value corresponds to the name of the target collection.
