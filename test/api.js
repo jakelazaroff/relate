@@ -392,4 +392,15 @@ describe('API', function () {
       });
     });
   });
+
+  describe('Relation', function () {
+    describe('.get', function () {
+      it('should return the related item from its collection', function () {
+
+        data = setup();
+
+        new Relate.Relation(Relate.collection('artists'), 1).get().should.equal(data.artists[0]);
+      });
+    });
+  });
 });
