@@ -126,6 +126,31 @@ describe('API', function () {
         expect(function () { Relate.collection.create('artists'); }).to.throw();
       });
     });
+    describe('.defaultTransform', function () {
+
+      var transform = sinon.spy(function(item) { return item; });
+
+      function checkTransform (items) {
+        items.forEach(function (item) {
+          transform.should.be.calledWith(item);
+        });
+      }
+
+      afterEach(function () {
+        transform.reset();
+      });
+
+      it('should be called once for each item imported', function () {
+
+        data = setup({
+          defaultTransform: transform
+        });
+
+        transform.callCount.should.equal(data.artists.length + data.songs.length);
+        checkTransform(data.artists);
+        checkTransform(data.songs);
+      });
+    });
     describe('.import', function () {
 
       beforeEach(function () {
