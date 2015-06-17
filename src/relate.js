@@ -7,7 +7,6 @@
       isObject = function (obj) { return typeof obj === 'object' && !!obj; },
       isFunction = function (func) { return typeof func === 'function' && !!func; };
 
-  // create the global relate object
   var Relate = {};
 
   Relate.VERSION = '/*VERSION*/'; // automatically generated in build process
@@ -114,7 +113,7 @@
     return collections[name];
   };
 
-  Relate.collection.create = function (name, options) {
+  Relate.createCollection = function (name, options) {
     if (Relate.collection(name))
       throw new Error('Collection "' + name + '" already exists.');
 
@@ -129,7 +128,7 @@
 
   Relate.import = function (data) {
     keys(data).map(function (name) {
-      return Relate.collection.create(name);
+      return Relate.createCollection(name);
     }).forEach(function (collection) {
       collection.import(data[collection.name]);
     });

@@ -28,7 +28,7 @@ describe('API', function () {
         should.not.exist(Relate.collection('musicians'));
       });
     });
-    describe('.collection.create', function () {
+    describe('.createCollection', function () {
 
       var dataset = function () { return clone([{id: 1, artist: 1}]) };
       var transform = function (item) { return item; },
@@ -48,7 +48,7 @@ describe('API', function () {
 
       it('should create a collection with the given name if none exists', function () {
 
-        Relate.collection.create('musicians');
+        Relate.createCollection('musicians');
 
         var musicians = Relate.collection('musicians');
         musicians.name.should.equal('musicians');
@@ -61,7 +61,7 @@ describe('API', function () {
           defaultTransform: fallbackTransform
         });
 
-        Relate.collection.create('musicians', {
+        Relate.createCollection('musicians', {
           transform: calledTransform
         }).import(dataset());
 
@@ -75,7 +75,7 @@ describe('API', function () {
           defaultTransform: fallbackTransform
         });
 
-        Relate.collection.create('musicians').import(dataset());
+        Relate.createCollection('musicians').import(dataset());
 
         calledTransform.should.be.called;
         fallbackTransform.should.not.be.called;
@@ -86,7 +86,7 @@ describe('API', function () {
           defaultTransform: calledTransform
         });
 
-        Relate.collection.create('musicians').import(dataset());
+        Relate.createCollection('musicians').import(dataset());
 
         calledTransform.should.be.called;
       });
@@ -96,7 +96,7 @@ describe('API', function () {
           map: {musicians: {artist: 'songs'}}
         });
 
-        Relate.collection.create('musicians', {
+        Relate.createCollection('musicians', {
           map: {artist: 'artists'}
         }).import(dataset());
 
@@ -110,7 +110,7 @@ describe('API', function () {
           map: {musicians: {artist: 'artists'}}
         });
 
-        Relate.collection.create('musicians').import(dataset());
+        Relate.createCollection('musicians').import(dataset());
 
         Relate.collection('musicians').get(1).get('artist').should.equal(
           Relate.collection('artists').get(1)
@@ -118,12 +118,12 @@ describe('API', function () {
       });
       it('should return the newly created collection', function () {
 
-        var musicians = Relate.collection.create('musicians');
+        var musicians = Relate.createCollection('musicians');
         musicians.should.equal(Relate.collection('musicians'));
       });
       it('should throw an error if a collection with the given name already exists', function () {
 
-        expect(function () { Relate.collection.create('artists'); }).to.throw();
+        expect(function () { Relate.createCollection('artists'); }).to.throw();
       });
     });
     describe('.defaultTransform', function () {
