@@ -26,7 +26,7 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('test', ['lint'], function (done) {
+gulp.task('test', function (done) {
 
   karma.start({
     configFile: __dirname + '/karma.conf.js',
