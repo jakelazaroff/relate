@@ -1,5 +1,6 @@
 {
   "name": "Relate",
+  "repository": "https://github.com/jakelazaroff/relate.git",
   "dependencies": {},
   "devDependencies": {
     "chai": "^2.3.0",
