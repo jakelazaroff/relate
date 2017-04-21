@@ -26,20 +26,6 @@ Load in a browser:
 <script src="relate.min.js"></script>
 ```
 
-Load using Node.js
-
-```javascript
-var Relate = require('Relate');
-```
-
-Load using AMD:
-
-```javascript
-require(['Relate'], function (Relate) {
-  // ...
-});
-```
-
 ## Documentation
 
 * [Getting Started](https://github.com/jakelazaroff/relate/blob/master/docs/getting-started.md)
