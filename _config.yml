@@ -1,0 +1,8 @@
+title: Relate
+description: Relate is a tiny client-side relational datastore.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
